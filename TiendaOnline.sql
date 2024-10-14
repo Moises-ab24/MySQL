@@ -1,0 +1,13 @@
+-- Moises Abarca 10-2
+CREATE DATABASE TiendaOnline;
+
+USE TiendaOnline;
+
+CREATE TABLE Direcciones (
+Id_Dirección INT AUTO_INCREMENT PRIMARY KEY,
+Calle VARCHAR(255) NOT NULL,
+Ciudad VARCHAR(100) NOT NULL,
+Estado VARCHAR(100) NOT NULL,
+Codigo_Postal VARCHAR(10) NOT NULL,
+País VARCHAR(100) NOT NULL
+);

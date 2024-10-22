@@ -43,8 +43,25 @@ JOIN Productos ON Pedidos_Productos.ID_Producto = Productos.ID_Producto;
 
 -- 12. Obtén todos los pedidos junto con los nombres de los productos y la cantidad de cada producto en esos pedidos.
 SELECT
+	Pedidos.ID_Pedido,
     Productos.Nombre AS Producto,
-    Pedidos_Productos.Cantidad -- Corregir
-FROM Productos
+    Pedidos_Productos.Cantidad 
+FROM Pedidos
 JOIN Pedidos_Productos ON Pedidos.ID_Pedido = Pedidos_Productos.ID_Pedido
 JOIN Productos ON Pedidos_Productos.ID_Producto = Productos.ID_Producto;
+
+-- 13. Muestra el nombre de cada cliente y el número total de pedidos que ha realizado. **(usar COUNT, LEFT JOIN, GROUP BY)
+SELECT
+	Clientes.Nombre AS Cliente,
+    COUNT(Pedidos.ID_Pedido) AS Total_Pedido
+FROM Clientes
+LEFT JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente
+GROUP BY Clientes.ID_Cliente;
+
+-- 14. Encuentra el nombre del cliente y el total gastado por cada uno. **(usar SUM, GROUP BY)
+SELECT
+	Clientes.Nombre AS Cliente,
+    SUM(Pedidos.Total) AS Total_Gastado
+FROM Clientes
+JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente
+GROUP BY Clientes.ID_Cliente;

@@ -35,11 +35,12 @@ SELECT * FROM Pedidos WHERE YEAR(fecha_pedido) = '2024';
 -- 11. Muestra todos los clientes y sus pedidos. 
 SELECT
     Clientes.Nombre AS Cliente,
-    Productos.Nombre AS Producto
+    Pedidos.ID_Pedido,
+    Pedidos.Fecha_Pedido,
+    Pedidos.Estado,
+    Pedidos.Total
 FROM Clientes
-JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente
-JOIN Pedidos_Productos ON Pedidos.ID_Pedido = Pedidos_Productos.ID_Pedido
-JOIN Productos ON Pedidos_Productos.ID_Producto = Productos.ID_Producto;
+JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente;
 
 -- 12. Obtén todos los pedidos junto con los nombres de los productos y la cantidad de cada producto en esos pedidos.
 SELECT
@@ -65,3 +66,47 @@ SELECT
 FROM Clientes
 JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente
 GROUP BY Clientes.ID_Cliente;
+
+-- 15. Obtén el nombre del cliente y el total de cada uno de sus pedidos realizados después del 1 de febrero de 2024. 
+SELECT
+	Clientes.Nombre AS Cliente,
+    Pedidos.Total
+FROM Clientes
+JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente
+WHERE fecha_pedido > '2024-02-01';
+
+-- 16. Encuentra todos los productos que nunca han sido vendidos. **(usar NOT IN con doble SELECT)
+SELECT Productos.Nombre From Productos WHERE Productos.ID_Producto 
+NOT IN (SELECT Pedidos_Productos.ID_Producto FROM Pedidos_Productos);
+
+-- 17. Muestra el nombre del cliente que ha realizado el pedido más caro. **(usar ORDER BY, DESC, LIMIT) 
+SELECT 
+	Clientes.Nombre AS Cliente,
+    Pedidos.Total
+FROM Clientes
+JOIN PedidoS ON Clientes.ID_Cliente = PedidoS.ID_Cliente
+ORDER BY Pedidos.Total DESC
+LIMIT 1;
+
+-- 18. Encuentra el nombre de cada producto y la cantidad total vendida de ese producto. **(usar SUM, GROUP BY) 
+SELECT
+	Productos.Nombre AS Productos,
+    SUM(Pedidos_Productos.Cantidad) AS Total_Ventas
+FROM Productos
+JOIN Pedidos_Productos ON Productos.ID_Producto = Pedidos_Productos.ID_Producto
+GROUP BY Productos.Nombre;
+
+-- 19. Muestra el nombre y dirección de todos los clientes junto con sus pedidos realizados.  
+SELECT
+	Clientes.Nombre AS Cliente,
+    Direcciones.Calle,
+    Pedidos.ID_Pedido,
+    Pedidos.Fecha_Pedido,
+    Pedidos.Estado,
+    Pedidos.Total
+FROM Clientes
+JOIN Direcciones ON Clientes.ID_Direccion = Direcciones.ID_Direccion
+JOIN Pedidos ON Clientes.ID_Cliente = Pedidos.ID_Cliente;
+
+-- 20. Muestra todos los productos cuyo nombre contiene la palabra "Sony".
+SELECT Productos.Nombre FROM Productos WHERE Nombre LIKE '%Sony%';
